@@ -56,8 +56,9 @@ paths:
                     items:
                       type: string
                 example:
-                  errors:
-                    - 'Title must be at least 3 characters'
+                  error: Validation failed
+                  details:
+                    - 'Title must be at least 3 and at most 100 characters'
   /health:
     get:
       summary: Health Check
@@ -79,6 +80,8 @@ components:
   schemas:
     Task:
       type: object
+      required:
+        - title
       properties:
         id:
           readOnly: true
