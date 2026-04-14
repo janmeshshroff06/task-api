@@ -9,6 +9,7 @@
     "migrate:dev": "npx prisma migrate dev",
     "migrate:deploy": "npx prisma migrate deploy",
     "seed:dev": "node --env-file=.env prisma/seed.js",
+    "seed:prod:local": "NODE_ENV=production node --env-file=.env prisma/seed.js",
     "seed:prod": "node prisma/seed.js"
   },
   "keywords": [
