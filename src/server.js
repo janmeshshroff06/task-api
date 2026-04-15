@@ -4,6 +4,7 @@ import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import yaml from 'js-yaml';
 import fs from 'fs';
+import { execFileSync } from 'child_process';
 import taskRoutes from './routes/taskRoutes.js';
 
 const app = express();
@@ -18,6 +19,16 @@ try {
 } catch (error) {
   console.log('Failed to load OpenAPI specification', error);
   process.exit(1);
+}
+
+if (process.env.NODE_ENV === 'production') {
+  try {
+    execFileSync('npm', ['run', 'migrate:deploy'], { stdio: 'inherit' });
+    execFileSync('npm', ['run', 'seed:prod'], { stdio: 'inherit' });
+  } catch (error) {
+    console.error('Failed to prepare production database', error);
+    process.exit(1);
+  }
 }
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
